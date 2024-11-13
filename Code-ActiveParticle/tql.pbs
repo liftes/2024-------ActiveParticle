@@ -1,0 +1,73 @@
+#PBS -S /bin/bash
+#PBS -N test
+#PBS -o test.err
+#PBS -j oe
+#PBS -q soft
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=800:00:00
+#PBS -V
+#=======================================================================
+# Send email when the calculation is terminated.
+#
+email=off
+#=======================================================================
+cd $PBS_O_WORKDIR
+#-----------------------------------------------------------------------
+user=`whoami`
+jobname=$PBS_JOBNAME
+#-----------------------------------------------------------------------
+#scratchdir=/scratch/$user/$jobname.$$
+#mkdir -p $scratchdir >& /dev/null
+#-----------------------------------------------------------------------
+#cp * $scratchdir
+#cd $scratchdir
+#-----------------------------------------------------------------------
+## Define the location where Gaussian was installed and run a setup script, g09.profile.
+#-----------------------------------------------------------------------
+echo "Number of cores: $PBS_NUM_PPN"
+echo "PBS_NODEFILE is $PBS_NODEFILE"
+echo "pbs nodefile:"
+cat  $PBS_NODEFILE
+echo "Starting Gaussian run at" `date`
+#-------------------------------------------------------------------------------
+#run
+#
+#export mpirun=/export/opt/mpich/mpich-3.2.1-gfortran-4.8.5/bin/mpirun
+#$mpirun -machinefile $PBS_NODEFILE $PBS_O_WORKDIR/test
+./test
+#-------------------------------------------------------------------------------
+#cp * $PBS_O_WORKDIR
+#cd $PBS_O_WORKDIR
+#rm -rf $scratchdir
+#-------------------------------------------------------------------------------
+echo "Finished Gaussian run at" `date`
+echo
+#===============================================================================
+# Send email when the calculation has finished.
+#
+if [ $email = on ]; then
+	#----------------------------------------------------------------------------
+	user=`whoami`
+	date=`date`
+	node=`cat $PBS_NODEFILE`
+	#----------------------------------------------------------------------------
+	# Subject
+	#
+	subject="Mozi report: Job $PBS_JOBNAME ($PBS_JOBID) has finished on Mozi Cluster"
+	#----------------------------------------------------------------------------
+	# Contents
+	#
+	content="
+Dear $user:
+       Your job $PBS_JOBNAME ($PBS_JOBID) has finished on Mozi Cluster.
+       nodelist:
+$node
+Administrator
+$date"
+	#----------------------------------------------------------------------------
+	# Send message
+	#
+	jobmsg -s "$subject" -c "$content"
+	#----------------------------------------------------------------------------
+fi
+#===============================================================================

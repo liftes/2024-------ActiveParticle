@@ -1,0 +1,10 @@
+*.exe
+*.o
+*.mod
+*.png
+*.pkl
+*.dat
+*.ai
+
+Note-ActiveParticle/
+PPT-ActivateParticle/

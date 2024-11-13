@@ -1,0 +1,23 @@
+15	            ! # of particle in a cell
+2               ! # of particle types
+200             ! # of particles of one type
+802             ! # of particles of 2nd type
+300             ! # of particles of 3rd type
+4.0d0           ! the distance of the 2nd type
+0.5d0           ! the distance of the 3rd type
+0.25d0          ! the radius of the 2nd type
+1.0d0           ! the radius of the 3rd type
+1.d-5           ! time step
+1.2d0           ! size of cell 
+1.0d0           ! eta viscosity
+20.d0	        ! stiffness of particle
+40.d0           ! Lx
+200.d0          ! Ly
+1000            ! Npre
+10.0d0          ! field strength
+10.0d0          ! f_b 
+50              ! moves
+5	            ! 1*10^NMCs
+1.0d0           ! kWCA
+0               ! charge3 charge of the 3rd type particle
+3               ! Lattice initialization
